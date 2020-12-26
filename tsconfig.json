@@ -6,8 +6,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
+    "strict": true,
     "target": "es2017",
-    "outDir": "lib"
+    "outDir": "lib",
+    "typeRoots": ["types", "node_modules/@types"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["./**/*.ts"],
   "exclude": [

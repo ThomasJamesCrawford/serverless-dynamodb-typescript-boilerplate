@@ -1,0 +1,108 @@
+service: serverless-schema-registry
+useDotenv: true
+
+custom:
+  webpack:
+    includeModules: true
+
+  prune:
+    automatic: true
+    number: 3
+
+package:
+  individually: true
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-iam-roles-per-function
+  - serverless-prune-plugin
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  apiGateway:
+    minimumCompressionSize: 1024
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    schemaRegistryTable: ${self:provider.stage}-SchemaRegistryTable
+    federationName: ${env:FEDERATION_NAME}
+  region: ap-southeast-2
+  httpApi:
+    cors: true
+
+functions:
+  graphql-gateway:
+    memorySize: 1024
+    handler: graphql-gateway/gateway.handler
+    events:
+      - httpApi:
+          method: post
+          path: /graphql
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - dynamodb:Query
+        Resource:
+          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
+
+  addSchema:
+    memorySize: 256
+    handler: schema-registry/addSchema.handler
+    events:
+      - httpApi:
+          method: post
+          path: /federation/{id}
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - dynamodb:Query
+          - dynamodb:PutItem
+        Resource:
+          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
+
+  validateSchema:
+    memorySize: 256
+    handler: schema-registry/validateSchema.handler
+    events:
+      - httpApi:
+          method: post
+          path: /federation/{id}/validate
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - dynamodb:Query
+        Resource:
+          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
+
+  getFederation:
+    memorySize: 256
+    handler: schema-registry/getFederation.handler
+    events:
+      - httpApi:
+          method: get
+          path: /federation/{id}
+    iamRoleStatements:
+      - Effect: 'Allow'
+        Action:
+          - dynamodb:Query
+        Resource:
+          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
+
+resources:
+  Resources:
+    SchemaRegistryTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.schemaRegistryTable}
+        AttributeDefinitions:
+          - AttributeName: PK
+            AttributeType: S
+          - AttributeName: SK
+            AttributeType: S
+        KeySchema:
+          - AttributeName: PK
+            KeyType: HASH
+          - AttributeName: SK
+            KeyType: RANGE
+        BillingMode: PAY_PER_REQUEST
