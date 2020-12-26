@@ -13,13 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm install
-      - name: Lint
-        run: npm run lint
+      - name: Run ESLint
+        run: eslint . --ext .js,.ts
       - name: Test
         run: npm run test
       # - name: Configure AWS Credentials

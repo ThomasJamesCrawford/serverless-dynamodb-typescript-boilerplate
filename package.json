@@ -5,7 +5,6 @@
   "main": "handler.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint",
     "deploy-dev": "sls deploy --stage dev",
     "deploy-prod": "sls deploy --stage production"
   },
