@@ -14,6 +14,7 @@
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "@aws/dynamodb-expressions": "^0.7.3",
+    "aws-lambda": "^1.0.6",
     "aws-lambda-fastify": "^1.4.4",
     "fast-json-stringify": "^2.3.0",
     "fastify": "^3.9.2",
