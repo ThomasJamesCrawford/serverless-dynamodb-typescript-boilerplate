@@ -28,6 +28,11 @@ export class Schema {
   }
 }
 
+export const makePK = (federationName: string) =>
+  `federation_${federationName}`;
+
+export const makeSK = (schemaName: string) => `schema_${schemaName}`;
+
 export const newSchema = async (
   federationName: string,
   schema: string,
@@ -41,8 +46,3 @@ export const newSchema = async (
     name,
     url,
   });
-
-export const makePK = (federationName: string) =>
-  `federation_${federationName}`;
-
-export const makeSK = (schemaName: string) => `schema_${schemaName}`;
