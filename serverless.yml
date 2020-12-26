@@ -30,6 +30,8 @@ provider:
   region: ap-southeast-2
   httpApi:
     cors: true
+  apiKeys:
+    - SCHEMA_REGISTRY_API_KEY
 
 functions:
   graphql-gateway:
@@ -50,9 +52,11 @@ functions:
     memorySize: 256
     handler: schema-registry/addSchema.handler
     events:
-      - httpApi:
+      - http:
           method: post
           path: /federation/{id}
+          private: true
+          cors: true
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -65,9 +69,11 @@ functions:
     memorySize: 256
     handler: schema-registry/validateSchema.handler
     events:
-      - httpApi:
+      - http:
           method: post
           path: /federation/{id}/validate
+          private: true
+          cors: true
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -79,9 +85,11 @@ functions:
     memorySize: 256
     handler: schema-registry/getFederation.handler
     events:
-      - httpApi:
+      - http:
           method: get
           path: /federation/{id}
+          private: true
+          cors: true
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
