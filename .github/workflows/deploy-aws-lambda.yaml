@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Run ESLint
-        run: eslint . --ext .js,.ts
+        run: npm run lint
       - name: Test
         run: npm run test
       # - name: Configure AWS Credentials
