@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable global-require */
-/* eslint-disable-next-line import/no-unresolved */
+/* eslint-disable import/no-unresolved */
 module.exports = async () => {
   const serverless = new (require('serverless'))();
 
