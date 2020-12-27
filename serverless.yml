@@ -7,7 +7,7 @@ custom:
     includeModules: true
   dev:
     deletionPolicy: Delete
-  prod:
+  production:
     deletionPolicy: Retain
 
   prune:
