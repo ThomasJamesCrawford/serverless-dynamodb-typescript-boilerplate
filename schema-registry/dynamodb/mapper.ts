@@ -19,3 +19,5 @@ const client = new DynamoDB(config);
 export const mapper = new DataMapper({
   client,
 });
+
+export const documentClient = new DynamoDB.DocumentClient(config);

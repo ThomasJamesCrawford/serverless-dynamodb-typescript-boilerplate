@@ -26,6 +26,7 @@ export const handler: APIGatewayProxyHandler = async (event, context) => {
         services,
       },
     });
+
     (global as any).app = app;
   }
 
