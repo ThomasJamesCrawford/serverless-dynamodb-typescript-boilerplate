@@ -41,6 +41,7 @@ functions:
       - httpApi:
           method: post
           path: /graphql
+    iamRoleStatementsName: gateway-${self:provider.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -57,6 +58,7 @@ functions:
           path: /federation/{id}
           private: true
           cors: true
+    iamRoleStatementsName: addSchema-${self:provider.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -74,6 +76,7 @@ functions:
           path: /federation/{id}/validate
           private: true
           cors: true
+    iamRoleStatementsName: validateSchema-${self:provider.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -90,6 +93,7 @@ functions:
           path: /federation/{id}
           private: true
           cors: true
+    iamRoleStatementsName: getFederation-${self:provider.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:

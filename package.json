@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint . --ext .ts,.js",
-    "deploy-dev": "sls deploy --stage dev",
-    "deploy-prod": "sls deploy --stage production"
+    "deploy-dev": "sls deploy --stage dev --conceal",
+    "deploy-prod": "sls deploy --stage production --conceal"
   },
   "dependencies": {
     "@apollo/federation": "^0.20.7",
