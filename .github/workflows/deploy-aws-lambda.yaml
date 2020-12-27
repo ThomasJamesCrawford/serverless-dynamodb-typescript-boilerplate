@@ -32,3 +32,5 @@ jobs:
           aws-region: ap-southeast-2
       - name: Serverless Deploy
         run: npm run deploy-prod
+        env:
+          FEDERATION_NAME: test
