@@ -31,7 +31,7 @@ provider:
     minimumCompressionSize: 1024
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    schemaRegistryTable: ${self:provider.stage}-SchemaRegistryTable
+    schemaRegistryTable: ${self:custom.stage}-SchemaRegistryTable
     federationName: ${env:FEDERATION_NAME}
   region: ap-southeast-2
   httpApi:
@@ -47,7 +47,7 @@ functions:
       - httpApi:
           method: post
           path: /graphql
-    iamRoleStatementsName: gateway-${self:provider.stage}-role
+    iamRoleStatementsName: gateway-${self:custom.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -64,7 +64,7 @@ functions:
           path: /federation/{id}
           private: true
           cors: true
-    iamRoleStatementsName: addSchema-${self:provider.stage}-role
+    iamRoleStatementsName: addSchema-${self:custom.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -82,7 +82,7 @@ functions:
           path: /federation/{id}/validate
           private: true
           cors: true
-    iamRoleStatementsName: validateSchema-${self:provider.stage}-role
+    iamRoleStatementsName: validateSchema-${self:custom.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
@@ -99,13 +99,22 @@ functions:
           path: /federation/{id}
           private: true
           cors: true
-    iamRoleStatementsName: getFederation-${self:provider.stage}-role
+    iamRoleStatementsName: getFederation-${self:custom.stage}-role
     iamRoleStatements:
       - Effect: 'Allow'
         Action:
           - dynamodb:Query
         Resource:
           - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
+
+  introspectionToSDL:
+    memorySize: 256
+    handler: introspectionToSDL.handler
+    events:
+      - http:
+          method: post
+          path: /introspection
+          cors: true
 
 resources:
   Resources:
