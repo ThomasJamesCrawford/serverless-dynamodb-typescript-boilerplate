@@ -37,7 +37,7 @@ provider:
   httpApi:
     cors: true
   apiKeys:
-    - SCHEMA_REGISTRY_API_KEY
+    - SCHEMA_REGISTRY_API_KEY_${self:custom.stage}
 
 functions:
   graphql-gateway:
