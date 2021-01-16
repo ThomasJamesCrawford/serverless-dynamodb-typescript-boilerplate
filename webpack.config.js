@@ -22,7 +22,7 @@ module.exports = {
     concatenateModules: false,
   },
   target: 'node',
-  externals: ['tiny-lru', 'fast-json-stringify'], // these 2 like staying as node_modules
+  externals: [], // add anything node related here that doesn't webpack nicely
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`

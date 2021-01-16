@@ -36,101 +36,40 @@ provider:
   region: ap-southeast-2
   httpApi:
     cors: true
-  apiKeys:
-    - SCHEMA_REGISTRY_API_KEY_${self:custom.stage}
+  # apiKeys:
+  #   - SCHEMA_REGISTRY_API_KEY_${self:custom.stage}
 
 functions:
-  graphql-gateway:
-    memorySize: 1024
-    handler: graphql-gateway/gateway.handler
-    events:
-      - httpApi:
-          method: post
-          path: /graphql
-    iamRoleStatementsName: gateway-${self:custom.stage}-role
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-          - dynamodb:Query
-        Resource:
-          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
-
-  addSchema:
-    memorySize: 256
-    handler: schema-registry/addSchema.handler
-    events:
-      - http:
-          method: post
-          path: /federation/{id}
-          private: true
-          cors: true
-    iamRoleStatementsName: addSchema-${self:custom.stage}-role
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-          - dynamodb:Query
-          - dynamodb:PutItem
-        Resource:
-          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
-
-  validateSchema:
-    memorySize: 256
-    handler: schema-registry/validateSchema.handler
-    events:
-      - http:
-          method: post
-          path: /federation/{id}/validate
-          private: true
-          cors: true
-    iamRoleStatementsName: validateSchema-${self:custom.stage}-role
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-          - dynamodb:Query
-        Resource:
-          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
-
-  getFederation:
-    memorySize: 256
-    handler: schema-registry/getFederation.handler
-    events:
-      - http:
-          method: get
-          path: /federation/{id}
-          private: true
-          cors: true
-    iamRoleStatementsName: getFederation-${self:custom.stage}-role
-    iamRoleStatements:
-      - Effect: 'Allow'
-        Action:
-          - dynamodb:Query
-        Resource:
-          - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
-
-  introspectionToSDL:
-    memorySize: 256
-    handler: introspectionToSDL.handler
-    events:
-      - http:
-          method: post
-          path: /introspection
-          cors: true
+  # graphql-gateway:
+  #   memorySize: 1024
+  #   handler: graphql-gateway/gateway.handler
+  #   events:
+  #     - httpApi:
+  #         method: post
+  #         path: /graphql
+  #   iamRoleStatementsName: gateway-${self:custom.stage}-role
+  #   iamRoleStatements:
+  #     - Effect: 'Allow'
+  #       Action:
+  #         - dynamodb:Query
+  #       Resource:
+  #         - 'Fn::GetAtt': [SchemaRegistryTable, Arn]
 
 resources:
   Resources:
-    SchemaRegistryTable:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: ${self:custom.${self:custom.stage}.deletionPolicy}
-      Properties:
-        TableName: ${self:provider.environment.schemaRegistryTable}
-        AttributeDefinitions:
-          - AttributeName: PK
-            AttributeType: S
-          - AttributeName: SK
-            AttributeType: S
-        KeySchema:
-          - AttributeName: PK
-            KeyType: HASH
-          - AttributeName: SK
-            KeyType: RANGE
-        BillingMode: PAY_PER_REQUEST
+    # SchemaRegistryTable:
+    #   Type: AWS::DynamoDB::Table
+    #   DeletionPolicy: ${self:custom.${self:custom.stage}.deletionPolicy}
+    #   Properties:
+    #     TableName: ${self:provider.environment.schemaRegistryTable}
+    #     AttributeDefinitions:
+    #       - AttributeName: PK
+    #         AttributeType: S
+    #       - AttributeName: SK
+    #         AttributeType: S
+    #     KeySchema:
+    #       - AttributeName: PK
+    #         KeyType: HASH
+    #       - AttributeName: SK
+    #         KeyType: RANGE
+    #     BillingMode: PAY_PER_REQUEST
